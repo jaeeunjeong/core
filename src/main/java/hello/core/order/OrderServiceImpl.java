@@ -21,4 +21,9 @@ public class OrderServiceImpl implements OrderService {
 
         return new Order(memberId, itemName, itemPrice, discountPrice);
     }
+
+    //싱글톤 검증을 위해 사용하기 위한 용도
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
+    }
 }
