@@ -1,4 +1,4 @@
-package beandefinition;
+package hello.core.beandefinition;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
