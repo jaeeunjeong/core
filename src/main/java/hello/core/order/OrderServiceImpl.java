@@ -4,6 +4,7 @@ import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,13 +13,11 @@ public class OrderServiceImpl implements OrderService {
     private MemberRepository memberRepository;
     private DiscountPolicy discountPolicy;
 
-    // 조회 빈을 2개로 만들면 NoUniqueBeanDefinitionException 에러가 발생한다.
-    // 매개변수에 분명하게 정해준다.
     @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy fixDiscountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
         System.out.println("CONSTRUCTER"); //순서 1
         this.memberRepository = memberRepository;
-        this.discountPolicy = fixDiscountPolicy;
+        this.discountPolicy = discountPolicy;
     }
 
 /*
