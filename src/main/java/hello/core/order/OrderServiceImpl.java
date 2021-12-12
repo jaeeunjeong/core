@@ -12,19 +12,24 @@ public class OrderServiceImpl implements OrderService {
     private MemberRepository memberRepository;
     private DiscountPolicy discountPolicy;
 
-
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    // 조회 빈을 2개로 만들면 NoUniqueBeanDefinitionException 에러가 발생한다.
+    // 매개변수에 분명하게 정해준다.
+    @Autowired
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy fixDiscountPolicy) {
         System.out.println("CONSTRUCTER"); //순서 1
         this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
+        this.discountPolicy = fixDiscountPolicy;
     }
 
+/*
     @Autowired
     public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         System.out.println("init"); //순서 1
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
+*/
+
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
