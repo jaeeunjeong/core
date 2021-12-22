@@ -1,5 +1,8 @@
 package hello.core.lifecycle;
 
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+
 /**
  * 빈 생명주기를 알아야하는 이유.
  * -> 네트워크나 DB연결과 같이 다른 애플리케이션과의 연결이 필요할 때, 객체를 언제 연결 시켜줄 것인가?
@@ -11,9 +14,11 @@ package hello.core.lifecycle;
  * 이러한 작업은 꼭 종료까지 해줘야한다.
  * <p>
  * cf) 초기화 콜백 : 빈이 생성되고, 빈의 의존관계 주입이 완료된 후 호출
- * 소멸전 콜백 : 빈이 소멸되기 직전에 호출출
+ * 소멸전 콜백 : 빈이 소멸되기 직전에 호출
+ * <p>
+ * -> 1. 인터페이스 InitializingBean, DisposableBean를 이용.
  */
-public class NetworkClient {
+public class NetworkClient implements InitializingBean, DisposableBean {
 
     private String url;
 
@@ -36,5 +41,18 @@ public class NetworkClient {
 
     public void disconnect() {
         System.out.println("close : " + url);
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("NetworkClient.destroy");
+        disconnect();
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("NetworkClient.afterPropertiesSet");
+        connect();
+        call("초기화 연결 메시지");
     }
 }
