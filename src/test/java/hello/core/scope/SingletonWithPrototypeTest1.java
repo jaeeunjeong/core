@@ -2,6 +2,7 @@ package hello.core.scope;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -31,11 +32,13 @@ public class SingletonWithPrototypeTest1 {
     static class ClientBean {
 
         @Autowired
-        private ApplicationContext ac;
+//        private ApplicationContext ac;
+        private ObjectProvider<PrototypeBean> prototypeBeanObjectProvider;
 
         public int logic() {
             //싱글톤 빈이 프로토타입을 사용할 때마다 스프링컨테이너에 요청하기.
-            PrototypeBean prototypeBean = ac.getBean(PrototypeBean.class);
+//            PrototypeBean prototypeBean = ac.getBean(PrototypeBean.class);
+            PrototypeBean prototypeBean = prototypeBeanObjectProvider.getObject();
             prototypeBean.addCount();
             int count = prototypeBean.getCount();
             return count;
